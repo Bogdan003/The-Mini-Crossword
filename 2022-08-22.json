@@ -1,0 +1,12 @@
+[
+    {"answer":"BAG", "clue":"Backpack or purse", "length":3, "date":"2022-08-22", "direction":"across"},
+    {"answer":"CARTE", "clue":"A la ___ (from the menu)", "length":5, "date":"2022-08-22", "direction":"across"},
+    {"answer":"ONION", "clue":"Guacamole ingredient", "length":5, "date":"2022-08-22", "direction":"across"},
+    {"answer":"SNAZZ", "clue":"Make more stylish, with \"up\"", "length":5, "date":"2022-08-22", "direction":"across"},
+    {"answer":"TAR", "clue":"Road paving material", "length":3, "date":"2022-08-22", "direction":"across"},
+    {"answer":"BRIAR", "clue":"Prickly patch", "length":5, "date":"2022-08-22", "direction":"down"},
+    {"answer":"ATOZ", "clue":"Span of the alphabet", "length":4, "date":"2022-08-22", "direction":"down"},
+    {"answer":"GENZ", "clue":"Zoomers, by another name", "length":4, "date":"2022-08-22", "direction":"down"},
+    {"answer":"COST", "clue":"Price", "length":4, "date":"2022-08-22", "direction":"down"},
+    {"answer":"ANNA", "clue":"Elsa's sister in \"Frozen\"", "length":4, "date":"2022-08-22", "direction":"down"}
+]
