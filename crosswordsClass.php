@@ -194,7 +194,7 @@ class Crosswords extends ArrayObject
 
                 if ($isMatchingLastLetter && strlen(rtrim($matchedWord, ' -')) == strlen($answer)) {
 
-                    $last_letter_key = array_search(end($answerArr), $matchedWordArr);
+                    $last_letter_key = strlen(rtrim($matchedWord, ' -')) - 1;
                     $first_letter_key = $last_letter_key - strlen($answer) + 1;
 
                     if ($key < $first_letter_key || $key > $last_letter_key) {
@@ -243,7 +243,7 @@ class Crosswords extends ArrayObject
 
                 if ($isMatchingLastLetter) {
 
-                    $last_letter_key = array_search(end($answerArr), $matchedWordArr);
+                    $last_letter_key = strlen(rtrim($matchedWord, ' -')) - 1;
                     $first_letter_key = $last_letter_key - strlen($answer) + 1;
 
                     if ($key < $first_letter_key || $key > $last_letter_key) {
