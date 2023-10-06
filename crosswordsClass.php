@@ -11,35 +11,15 @@ class Crosswords extends ArrayObject
     private $jsonData;
     public $maxRows;
     public $maxColumns;
-    public $crosswords;
+    private $crosswords;
+    private $cellsData;
 
     public function __construct($jsonData)
     {
         parent::__construct($jsonData, ArrayObject::ARRAY_AS_PROPS);
 
         $this->jsonData = $jsonData;
-    }
 
-    public function setTable():array
-    {
-        $directions = array_column($this->jsonData, 'direction');
-        $tableDimensions = array_count_values($directions);
-
-        $this->maxRows = $tableDimensions['across'];
-        $this->maxColumns = $tableDimensions['down'];
-
-        for ($row=0; $row < $this->maxRows; $row++) {
-            $this->crosswords[] = str_repeat(' ', $this->maxColumns);
-        }
-
-        return [
-            'rows'      => $tableDimensions['across'],
-            'columns'   => $tableDimensions['down']
-        ];
-    }
-
-    public function fillCrosswords():array
-    {
         $acrossWords = [];
         $downWords = [];
         foreach ($this->jsonData as $word) {
@@ -50,9 +30,22 @@ class Crosswords extends ArrayObject
             }
         }
 
+        $this->setTable();
         $this->fillCrosswordsRecursively($acrossWords, $downWords);
+        $this->setAdditionalCellsData();
+    }
 
-        return $this->crosswords;
+    public function setTable():void
+    {
+        $directions = array_column($this->jsonData, 'direction');
+        $tableDimensions = array_count_values($directions);
+
+        $this->maxRows = $tableDimensions['across'];
+        $this->maxColumns = $tableDimensions['down'];
+
+        for ($row=0; $row < $this->maxRows; $row++) {
+            $this->crosswords[] = str_repeat(' ', $this->maxColumns);
+        }
     }
 
     private function fillCrosswordsRecursively(array $acrossWords, array $downWords):void
@@ -107,6 +100,71 @@ class Crosswords extends ArrayObject
         foreach ($this->crosswords as $word) {
             if (strpos($word, ' ') !== false ) {
                 $this->fillCrosswordsRecursively($acrossWords, $downWords);
+            }
+        }
+    }
+
+    public function setAdditionalCellsData():void
+    {
+        $number = 1;
+
+        foreach ($this->crosswords as $key => $word) {
+            $wordArr = str_split($word);
+            foreach ($wordArr as $letterKey => $letter) {
+
+                $this->cellsData[$key][$letterKey]['value'] = ($letter == '-') ? '-' : ' ';
+
+                if ($letter == '-') continue;
+
+                if ($key == 0) {
+                    if ($letterKey == 0) {
+                        $this->cellsData[$key][$letterKey]['across'] = $number;
+                        $this->cellsData[$key][$letterKey]['down'] = $number;
+                        $this->cellsData[$key][$letterKey]['number'] = $number;
+                        $number++;
+                    } else {
+                        if ($this->cellsData[$key][$letterKey - 1]['value'] == '-') {
+                            $this->cellsData[$key][$letterKey]['across'] = $number;
+                            $this->cellsData[$key][$letterKey]['down'] = $number;
+                            $this->cellsData[$key][$letterKey]['number'] = $number;
+                            $number++;
+                        } else {
+                            $this->cellsData[$key][$letterKey]['across'] = $this->cellsData[$key][$letterKey - 1]['across'];
+                            $this->cellsData[$key][$letterKey]['down'] = $number;
+                            $this->cellsData[$key][$letterKey]['number'] = $number;
+                            $number++;
+                        }
+                    }
+                } else {
+                    if ($letterKey == 0) {
+                        $this->cellsData[$key][$letterKey]['across'] = $number;
+                        $this->cellsData[$key][$letterKey]['down'] = ($this->cellsData[$key - 1][$letterKey]['value'] == '-') ? $number : $this->cellsData[$key-1][$letterKey]['down'];
+                        $this->cellsData[$key][$letterKey]['number'] = $number;
+                        $number++;
+                    } else {
+
+                        if ($this->cellsData[$key][$letterKey - 1]['value'] == '-' || $this->cellsData[$key - 1][$letterKey]['value'] == '-') {
+
+                            if ($this->cellsData[$key][$letterKey - 1]['value'] == '-') {
+                                $this->cellsData[$key][$letterKey]['across'] = $number;
+                            } else {
+                                $this->cellsData[$key][$letterKey]['across'] = $this->cellsData[$key][$letterKey - 1]['across'];
+                            }
+
+                            if ($this->cellsData[$key - 1][$letterKey]['value'] == '-') {
+                                $this->cellsData[$key][$letterKey]['down'] = $number;
+                            } else {
+                                $this->cellsData[$key][$letterKey]['down'] = $this->cellsData[$key-1][$letterKey]['down'];
+                            }
+
+                            $this->cellsData[$key][$letterKey]['number'] = $number;
+                            $number++;
+                        } else {
+                            $this->cellsData[$key][$letterKey]['across'] = $this->cellsData[$key][$letterKey - 1]['across'];
+                            $this->cellsData[$key][$letterKey]['down'] = $this->cellsData[$key-1][$letterKey]['down'];
+                        }
+                    }
+                }
             }
         }
     }
@@ -265,7 +323,29 @@ class Crosswords extends ArrayObject
                     }
                 }
             }
+
+            if ($direction == 'across' && $letter != ' ') {
+
+            }
         }
+    }
+
+    public function getTable():array
+    {
+        return [
+            'rows'      => $this->maxRows,
+            'columns'   => $this->maxColumns
+        ];
+    }
+
+    public function getCrosswords():array
+    {
+        return $this->crosswords;
+    }
+
+    public function getAdditionalCellsData():array
+    {
+        return $this->cellsData;
     }
 
     public function reveal(int $revealType, string $direction = null, int $position = null):mixed

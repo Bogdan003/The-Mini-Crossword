@@ -1,0 +1,40 @@
+.container {
+    margin: 50px;
+}
+
+table, tr, td {
+    border: 1px solid;
+}
+
+td {
+    width: 100px;
+    height: 100px;
+}
+
+.word-index-box {
+    position: absolute;
+    /* margin-top: -35px; */
+}
+
+.word-index {
+    margin-top: -50px;
+    font-size: 25px;
+    font-weight: 700;
+    position: absolute;
+    /* margin-bottom: 0px; */
+}
+
+.word-box {
+    /* position: relative; */
+    text-align: center;
+    /* margin-bottom: -10px; */
+}
+
+input {
+    width: 45px;
+    height: 55px;
+    font-size: 50px;
+    text-align: center;
+    text-transform: capitalize;
+    border: none;
+}

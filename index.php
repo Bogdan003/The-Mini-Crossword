@@ -1,13 +1,15 @@
 <?php
 
-$filename = '2022-08-22.json';
+$filename = '2023-10-04.json';
 $jsonContent = file_get_contents('input/' . $filename);
 $jsonData = json_decode($jsonContent, true);
 
 require_once 'crosswordsClass.php';
 $crossWordsObj = new Crosswords($jsonData);
-$tableDimensions = $crossWordsObj->setTable();
-$resolve = $crossWordsObj->fillCrosswords();
+$tableDimensions = $crossWordsObj->getTable();
+$additionalCellsData = $crossWordsObj->getAdditionalCellsData();
 
 echo "<pre>";
-var_dump($resolve);
+var_dump($crossWordsObj->getCrosswords());
+
+require_once 'view.php';
