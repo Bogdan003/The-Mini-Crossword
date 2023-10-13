@@ -112,7 +112,7 @@ class Crosswords extends ArrayObject
             $wordArr = str_split($word);
             foreach ($wordArr as $letterKey => $letter) {
 
-                $this->cellsData[$key][$letterKey]['value'] = ($letter == '-') ? '-' : ' ';
+                $this->cellsData[$key][$letterKey]['value'] = ($letter == '-') ? '-' : $letter;
 
                 if ($letter == '-') continue;
 
