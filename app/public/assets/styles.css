@@ -30,11 +30,15 @@ td {
     margin-top: -40px;
     margin-bottom: -20px;
     font-size: 50px;
-
+    color: #2860d8;
 }
 
 .black-box {
     background-color: black;
+}
+
+.black-box .word-box {
+    color: black;
 }
 
 input {

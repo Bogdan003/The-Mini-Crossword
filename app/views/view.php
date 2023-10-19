@@ -18,7 +18,7 @@
                                 <div class="word-index-box">
                                     <p class="word-index"><?php if (isset($letter['number'])) echo $letter['number']; ?></p>
                                 </div>
-                                <div class="word-box <?php if ($letter['value'] == '-') echo 'black-box'; ?>" data-across-cell="">
+                                <div class="word-box" data-across-cell="">
                                     <p><b><?php echo $letter['value']; ?></b></p>
                                 </div>
                             </td>
